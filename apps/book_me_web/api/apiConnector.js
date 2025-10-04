@@ -97,4 +97,4 @@ const sendMessage = function (method, params) {
     });
 }
 
-export { sendMessage };
+export { sendMessage }; 
