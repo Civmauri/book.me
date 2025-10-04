@@ -1,0 +1,23 @@
+{
+  "name": "book.me",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run build -w packages/book_me_entities",
+    "dev": "concurrently \"npm run dev -w apps/book_me_api\" \"npm run dev -w apps/book_me_web\""
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "devDependencies": {
+    "concurrently": "^9.0.0",
+    "typescript": "^5.6.3"
+  },
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
+  "description": ""
+}
