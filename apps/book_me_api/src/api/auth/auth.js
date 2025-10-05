@@ -1,5 +1,5 @@
 
-import { hashSomething } from '../security/security.js';
+import { hashSomething, get_success_result } from '../security/security.js';
 import { models } from '../../database/sequelize.js';
 import { User, UserSchema } from 'book_me_entities';
 
@@ -129,22 +129,12 @@ const login = async (credentials) => {
             };
         }
         
-        // Return user data (without password)
-        return {
-            success: true,
-            message: 'Login successful',
-            user: {
-                id: user.id,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                email: user.email,
-                phoneNumber: user.phoneNumber,
-                userType: user.userType,
-                birthDate: user.birthDate,
-                active: user.active,
-                userType: user.userType
-            }
-        };
+        // Build standardized success result with JWT token
+        const successResult = await get_success_result({
+           user: user.dataValues
+        });
+
+        return successResult;
         
     } catch (error) {
         console.error('Login error:', error);

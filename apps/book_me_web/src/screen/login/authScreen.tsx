@@ -64,12 +64,13 @@ const AuthPage = () => {
             });
 
             if (response.success) {
-                setSuccessMessage(`Benvenuto ${response.user.firstName} ${response.user.lastName}! (${response.user.userType})`);
-                // Store user data and redirect to dashboard
+                setSuccessMessage(`Benvenuto ${response.user.firstName} ${response.user.lastName}!`);
+                // Store user data and redirect to role-based home
                 if (response.user) {
+                    response.user.token = response.token;
                     login(response.user);
                     setTimeout(() => {
-                        navigate('/login');
+                        navigate('/home', { replace: true });
                     }, 2000);
                 }
             } else {

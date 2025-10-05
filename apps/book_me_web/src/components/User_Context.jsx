@@ -7,6 +7,7 @@ export const UserProvider = ({ children }) => {
 
     const currentUser = () => {
         // Check if user is logged in (you can modify this logic based on your authentication)
+        
         const storedUser = localStorage.getItem('user');
         if (storedUser) {
             return JSON.parse(storedUser);
