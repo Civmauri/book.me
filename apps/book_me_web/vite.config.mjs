@@ -7,5 +7,9 @@ export default defineConfig({
   server: {
     port: 5173,
     open: true
+  },
+  define: {
+    // Make environment variables available to the client
+    'process.env': process.env
   }
 })

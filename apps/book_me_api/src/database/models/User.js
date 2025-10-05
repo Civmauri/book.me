@@ -65,6 +65,15 @@ const defineUser = (sequelize) => {
     type: DataTypes.STRING,
     allowNull: true
   },
+  userType: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: {
+        msg: 'userType is required'
+      }
+    }
+  },
   deleted: {
     type: DataTypes.BOOLEAN,
     defaultValue: false,

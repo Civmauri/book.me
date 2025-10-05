@@ -6,6 +6,7 @@ export class User extends Person {
   public readonly email: string;
   public readonly password: string;
   public readonly phoneNumber?: string;
+  public readonly userType: string;
   public readonly deleted: boolean;
   public readonly active: boolean;
 
@@ -14,6 +15,7 @@ export class User extends Person {
     this.email = dto.email;
     this.password = dto.password;
     this.phoneNumber = dto.phoneNumber;
+    this.userType = dto.userType;
     this.deleted = dto.deleted;
     this.active = dto.active;
   }

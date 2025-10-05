@@ -7,6 +7,7 @@ export const UserSchema = PersonSchema.extend({
   email: z.string().email(getUserTranslations().email.invalid).trim().toLowerCase(),
   password: z.string().min(8, getUserTranslations().password.minLength),
   phoneNumber: z.string().trim().optional(),
+  userType: z.string().trim(),
   deleted: z.boolean().default(false),
   active: z.boolean().default(true),
 });

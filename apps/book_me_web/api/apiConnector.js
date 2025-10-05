@@ -3,8 +3,10 @@ import withReactContent from 'sweetalert2-react-content';
 
 const sendMessage = function (method, params) {
     return new Promise(function (resolve, reject) {
-        var url = `${process.env.REACT_APP_API_URL}/${method}`;
-
+        // Get API URL from environment variables with fallback
+        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+        var url = `${apiUrl}/${method}`;
+        console.log('API URL:', url);
         const { body, token } = params;
 
         var headers = {

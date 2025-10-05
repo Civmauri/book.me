@@ -4,6 +4,7 @@ import morgan from "morgan";
 import dotenv from "dotenv";
 import bodyParser from 'body-parser';
 import testRoutes from "./src/routes/test_routes.js";
+import authRoutes from "./src/routes/auth_routes.js";
 import { syncDatabase } from "./src/database/sequelize.js";
 
 
@@ -24,6 +25,7 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 // Mount test routes
 app.use('/api/test', testRoutes);
+app.use('/api/auth', authRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -52,7 +54,20 @@ const startServer = async () => {
     // Start the server
     const server = app.listen(PORT, () => {
       console.log("API service started listening on PORT:", PORT);
+      console.log("Server is ready to accept requests...");
     });
+    
+    // Set up graceful shutdown handling
+    const gracefulShutdown = (signal) => {
+      console.log(`${signal} received, shutting down gracefully`);
+      server.close(() => {
+        console.log('Process terminated');
+        process.exit(0);
+      });
+    };
+
+    process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+    process.on('SIGINT', () => gracefulShutdown('SIGINT'));
     
     return server;
   } catch (error) {
@@ -62,34 +77,27 @@ const startServer = async () => {
 };
 
 // Start the application
-startServer().then(server => {
-  // Graceful shutdown handling
-  process.on('SIGTERM', () => {
-    console.log('SIGTERM received, shutting down gracefully');
-    server.close(() => {
-      console.log('Process terminated');
-      process.exit(0);
-    });
-  });
-
-  process.on('SIGINT', () => {
-    console.log('SIGINT received, shutting down gracefully');
-    server.close(() => {
-      console.log('Process terminated');
-      process.exit(0);
-    });
-  });
+startServer().catch(error => {
+  console.error('Failed to start application:', error);
+  process.exit(1);
 });
 
 // Handle uncaught exceptions
 process.on('uncaughtException', (err) => {
   console.error('Uncaught Exception:', err);
+  console.error('Stack trace:', err.stack);
   process.exit(1);
 });
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (reason, promise) => {
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  console.error('Stack trace:', reason?.stack);
   process.exit(1);
+});
+
+// Keep the process alive
+process.on('beforeExit', (code) => {
+  console.log('Process is about to exit with code:', code);
 });
   
